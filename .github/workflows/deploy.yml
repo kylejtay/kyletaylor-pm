@@ -24,10 +24,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - id: pages
-        uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm run check
+      - id: pages
+        uses: actions/configure-pages@v5
       - run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
