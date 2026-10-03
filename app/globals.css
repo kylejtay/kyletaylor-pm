@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Layout concept: a ruled "lab bench" page. Content sits inside hairline frames
+   with corner ticks, mono labels annotate everything like an agent trace, and
+   one ember accent marks whatever the agent is doing right now. */
+@theme {
+  --color-paper: #f7f7f5;
+  --color-card: #ffffff;
+  --color-ink: #121212;
+  --color-ink-2: #3b3936;
+  --color-muted: #75716b;
+  --color-line: #e5e3df;
+  --color-line-strong: #d3d0ca;
+  --color-ember: #ff5a1f;
+  --color-ember-ink: #d6430c;
+  --color-ember-soft: #fff0e8;
+  --color-ok: #1f9d55;
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-pixel: "Press Start 2P", "Geist Mono", ui-monospace, monospace;
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-blink: blink 1s steps(2, start) infinite;
+  --animate-ring-pulse: ring-pulse 1.8s ease-out infinite;
+  --animate-glow: glow 3.2s ease-in-out infinite;
+  --animate-ping-soft: ping-soft 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
+  @keyframes ring-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.55);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 9px rgba(255, 90, 31, 0);
+    }
+  }
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 1px rgba(255, 90, 31, 0.35),
+        0 0 22px 2px rgba(255, 90, 31, 0.16);
+    }
+    50% {
+      box-shadow:
+        0 0 0 1px rgba(255, 90, 31, 0.6),
+        0 0 38px 6px rgba(255, 90, 31, 0.26);
+    }
+  }
+  @keyframes ping-soft {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    80%,
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap-style: balance;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: #fff;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+  }
+}
+
+/* Faint ruled grid used behind framed sections. */
+.bg-rule {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 0%,
+    var(--color-muted) 40%,
+    var(--color-ink) 50%,
+    var(--color-muted) 60%,
+    var(--color-muted) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+/* While the chat card glides, keep its relayout from touching the rest of the page. */
+[data-gliding] [data-calm="inset"] {
+  contain: layout paint;
+}
+
+/* Scrolls, but never shows a bar. */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,12 @@
+node_modules
+.next
+dist
+next-env.d.ts
+*.tsbuildinfo
+out
+
+# Concept images, not used by the site yet (kept local, out of git history)
+assets/
+
+# Private job-search notes (strategy, interview log); kept local, never pushed
+context/
